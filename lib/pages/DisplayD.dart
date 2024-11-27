@@ -1,13 +1,14 @@
-import 'package:fashion/pages/Login.dart';
 import 'package:fashion/pages/edit_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../model/item.dart';
 import '../provider/cart.dart';
+import '../provider/userpro.dart';
 import '../shared/appbar.dart';
 import '../shared/colors.dart';
 import 'Home.dart';
+import 'Logo.dart';
 import 'checkout.dart';
 import 'closet_selection.dart';
 import 'details_screen.dart';
@@ -21,7 +22,8 @@ class DisplayD extends StatelessWidget {
     final filteredItems = items
         .where((item) => item.Category.toLowerCase() == category.toLowerCase())
         .toList();
-    
+    final userProvider = Provider.of<UserProvider>(context);
+    final userInfo = userProvider.userInfo;
     return Scaffold(
       appBar: AppBar(
         actions: [ProductsAndPrice()],
@@ -34,28 +36,41 @@ class DisplayD extends StatelessWidget {
           children: [
             Column(
               children: [
-                const UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/img/1.jpg"),
-                        fit: BoxFit.cover),
-                  ),
+                UserAccountsDrawerHeader(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                    Color.fromARGB(124, 218, 197, 175),
+                    Color.fromARGB(92, 236, 171, 93),
+                    Color.fromARGB(103, 220, 144, 63),
+                  ])
+                      // image: DecorationImage(
+                      //     image: AssetImage("assets/img/2.jpg"),
+                      //     fit: BoxFit.cover),
+                      ),
                   currentAccountPicture: CircleAvatar(
-                      radius: 55,
-                      backgroundImage: AssetImage("assets/img/2.jpg")),
+                    radius: 55,
+                    backgroundImage: userInfo.image != null
+                        ? FileImage(userInfo.image!)
+                        : const AssetImage("assets/img/1.jpg") as ImageProvider,
+                  ),
                   accountEmail: Text(
-                    "maria@61.com",
-                    style: TextStyle(
+                    userInfo.email.isNotEmpty
+                        ? userInfo.email
+                        : "No email provided",
+                    style: const TextStyle(
                       color: Color.fromARGB(255, 9, 5, 5),
                     ),
                   ),
-                  accountName: Text("Maria Zaid",
-                      style: TextStyle(
+                  accountName: Text(
+                      userInfo.username.isNotEmpty
+                          ? userInfo.username
+                          : "No username provided",
+                      style: const TextStyle(
                         color: Color.fromARGB(255, 9, 5, 5),
                       )),
                 ),
                 ListTile(
-                    title: Text("Profile"),
+                    title: Text("Home"),
                     leading: Icon(Icons.person),
                     onTap: () {
                       Navigator.push(
@@ -66,8 +81,8 @@ class DisplayD extends StatelessWidget {
                       );
                     }),
                 ListTile(
-                    title: Text("My Favorite"),
-                    leading: Icon(Icons.favorite),
+                    title: const Text("My Favorite"),
+                    leading: const Icon(Icons.favorite),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -77,8 +92,8 @@ class DisplayD extends StatelessWidget {
                       );
                     }),
                 ListTile(
-                    title: Text("New"),
-                    leading: Icon(Icons.next_week_outlined),
+                    title: const Text("My Closet"),
+                    leading: const Icon(Icons.next_week_outlined),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -88,24 +103,23 @@ class DisplayD extends StatelessWidget {
                       );
                     }),
                 ListTile(
-                    title: Text("Change Accont"),
-                    leading: Icon(Icons.change_circle_outlined),
-                    onTap: () {
-                      Navigator.push(
+                  title: const Text("Change Accont"),
+                  leading: const Icon(Icons.change_circle_outlined),
+                  onTap: () {
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const EditProfilePage(),
-                        ),
-                      );
-                    }),
+                            builder: (context) => const EditProfilePage()));
+                  },
+                ),
                 ListTile(
                     title: const Text("Logout"),
-                    leading: Icon(Icons.exit_to_app),
+                    leading: const Icon(Icons.exit_to_app),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Login(),
+                          builder: (context) => const Logo(),
                         ),
                       );
                     }),
