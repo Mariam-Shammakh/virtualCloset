@@ -22,32 +22,37 @@ class ClosetSelectionPage extends StatelessWidget {
         final TextEditingController nameController = TextEditingController();
         final TextEditingController categoryController =
             TextEditingController();
-        final TextEditingController locationController =
-            TextEditingController();
 
         // Show a dialog to input name, category, and location
         await showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: const Text('Add Item Details'),
+              title: const Text(
+                'Add Item Details',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 147, 83, 0),
+                ),
+              ),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextField(
                       controller: nameController,
-                      decoration: InputDecoration(labelText: 'Item Name'),
+                      decoration: const InputDecoration(
+                          labelText: 'Item Name',
+                          labelStyle: TextStyle(
+                            color: Color.fromARGB(255, 147, 83, 0),
+                          )),
                     ),
                     TextField(
-                      controller: categoryController,
-                      decoration: InputDecoration(labelText: 'Category'),
-                    ),
-                    TextField(
-                      controller: locationController,
-                      decoration:
-                          InputDecoration(labelText: 'Location (optional)'),
-                    ),
+                        controller: categoryController,
+                        decoration: const InputDecoration(
+                            labelText: 'Category',
+                            labelStyle: TextStyle(
+                              color: Color.fromARGB(255, 147, 83, 0),
+                            ))),
                   ],
                 ),
               ),
@@ -56,7 +61,11 @@ class ClosetSelectionPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Cancel'),
+                  child: const Text(
+                    'Cancel',
+                    style:
+                        TextStyle(color: BTNpink, fontWeight: FontWeight.w100),
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
@@ -70,7 +79,13 @@ class ClosetSelectionPage extends StatelessWidget {
                     }
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Save'),
+                  child: const Text(
+                    'Save',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 147, 83, 0),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30),
+                  ),
                 ),
               ],
             );
@@ -83,31 +98,64 @@ class ClosetSelectionPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Closet'),
         actions: [ProductsAndPrice()],
-        backgroundColor:appbarGreen ,
-        foregroundColor:fontcolor,
-        
+        backgroundColor: appbarGreen,
+        foregroundColor: fontcolor,
       ),
       body: Column(
         children: [
-          ElevatedButton(
-            onPressed: _pickImage,
-            child: const Text('Select Image'),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            margin: EdgeInsets.all(10),
+            width: double.infinity,
+            decoration: BoxDecoration(borderRadius: BorderRadius.zero),
+            child: ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(
+                      Color.fromARGB(255, 248, 217, 180)),
+                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                    // Change your radius here
+                    borderRadius: BorderRadius.circular(10),
+                  ))),
+              onPressed: _pickImage,
+              child: const Text(
+                'Select Image',
+                style: TextStyle(
+                  color: Color.fromARGB(255, 147, 83, 0),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
           ),
           Expanded(
             child: ListView.builder(
               itemCount: imageModel.imageItems.length,
               itemBuilder: (context, index) {
                 final item = imageModel.imageItems[index];
-                return ListTile(
-                  leading: Image.file(
-                    File(item.imagePath),
-                    fit: BoxFit.cover,
-                    width: 50,
-                    height: 50,
-                    
+                return Card(
+                  elevation: 6,
+                  shadowColor: appbarGreen,
+                  color: Colors.white,
+                  shape:const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)
+                         ),
+                      side: BorderSide(width: 0.6, color: fontcolor)),
+                  child: ListTile(
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.file(
+                        File(item.imagePath),
+                        fit: BoxFit.cover,
+                        width: 50,
+                        height: 50,
+                      ),
+                    ),
+                    title: Text(item.name),
+                    subtitle: Text(item.category),
                   ),
-                  title: Text(item.name),
-                  subtitle: Text(item.category),
                 );
               },
             ),

@@ -21,12 +21,12 @@ class DisplayD extends StatelessWidget {
     final filteredItems = items
         .where((item) => item.Category.toLowerCase() == category.toLowerCase())
         .toList();
-    final carttt = Provider.of<Cart>(context);
+    
     return Scaffold(
       appBar: AppBar(
         actions: [ProductsAndPrice()],
         backgroundColor: appbarGreen,
-        title:  Text("Display $category"),
+        title: Text("Display $category"),
       ),
       drawer: Drawer(
         child: Column(
@@ -79,12 +79,14 @@ class DisplayD extends StatelessWidget {
                 ListTile(
                     title: Text("New"),
                     leading: Icon(Icons.next_week_outlined),
-                    onTap: () { Navigator.push(
+                    onTap: () {
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ClosetSelectionPage(),
                         ),
-                      );}),
+                      );
+                    }),
                 ListTile(
                     title: Text("Change Accont"),
                     leading: Icon(Icons.change_circle_outlined),
@@ -130,7 +132,11 @@ class DisplayD extends StatelessWidget {
                 itemCount: filteredItems.length,
                 itemBuilder: (BuildContext context, int index) {
                   final item = filteredItems[index];
-                  return Card(
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.grey[200],
+                    ),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -147,6 +153,8 @@ class DisplayD extends StatelessWidget {
                             trailing: IconButton(
                                 color: Color.fromARGB(255, 138, 134, 134),
                                 onPressed: () {
+                                  final carttt =
+                                      Provider.of<Cart>(context, listen: false);
                                   carttt.add(item);
                                 },
                                 icon: const Icon(Icons.favorite_border_sharp)),

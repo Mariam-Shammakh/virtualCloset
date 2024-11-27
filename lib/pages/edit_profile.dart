@@ -3,9 +3,10 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import '../shared/appbar.dart';
+import '../shared/colors.dart';
 
 class EditProfilePage extends StatefulWidget {
- const  EditProfilePage ({super.key});
+  const EditProfilePage({super.key});
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
@@ -52,12 +53,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit Profile"),
-                actions: [ProductsAndPrice()],
-
+        backgroundColor: appbarGreen,
+        foregroundColor: fontcolor,
+        actions: [ProductsAndPrice()],
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding:const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
             child: Column(
@@ -71,14 +73,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       backgroundImage: _profileImage != null
                           ? FileImage(_profileImage!)
                           : AssetImage("assets/img/1.jpg") as ImageProvider,
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
                 SizedBox(height: 16.0),
                 TextFormField(
-                  decoration: InputDecoration(
-                    labelText: "userName",
-                  ),
+                  decoration: const InputDecoration(
+                      label: Text(
+                    "userName",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 147, 83, 0),
+                    ),
+                  )),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter userName";
@@ -91,11 +102,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: "Email",
-                  ),
+                      label: Text(
+                    'Gmail',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 147, 83, 0),
+                    ),
+                  )),
                   validator: (value) {
-                    if (value == null || value.isEmpty || !value.contains('@')) {
-                      return "Please enter a valid email address";
+                    if (value == null || value.isEmpty) {
+                      return "Please enter your email";
+                    } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$')
+                        .hasMatch(value)) {
+                      return "Enter a valid email address";
                     }
                     return null;
                   },
@@ -107,28 +126,52 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
                 TextFormField(
                   decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            IsVisible = !IsVisible;
-                          });
-                        },
-                        icon: Icon(
-                            IsVisible ? Icons.visibility : Icons.visibility_off)),
-                    labelText: "Password",
-                  ),
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              IsVisible = !IsVisible;
+                            });
+                          },
+                          icon: Icon(IsVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off)),
+                      label: const Text(
+                        'Password',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 147, 83, 0),
+                        ),
+                      )),
                   onSaved: (value) {
                     _Password = value!;
                   },
                   keyboardType: TextInputType.visiblePassword,
                   obscureText: !IsVisible,
                 ),
-                //SizedBox(height: 70,),
-                
+                SizedBox(
+                  height: 70,
+                ),
                 Center(
-                  child: ElevatedButton(
-                    onPressed: _saveProfile,
-                    child:const Text("Update Profile"),
+                  child: Container(
+                    margin: EdgeInsets.all(5),
+                    width: double.infinity,
+                    decoration: BoxDecoration(borderRadius: BorderRadius.zero),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all(
+                              Color.fromARGB(255, 248, 217, 180)),
+                          shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                            // Change your radius here
+                            borderRadius: BorderRadius.circular(10),
+                          ))),
+                      onPressed: _saveProfile,
+                      child: const Text(
+                        "Update Profile",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 147, 83, 0),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],

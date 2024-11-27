@@ -5,6 +5,7 @@ import '../model/item.dart';
 import '../shared/appbar.dart';
 import '../shared/colors.dart';
 
+// ignore: must_be_immutable
 class Details extends StatefulWidget {
   Item product;
   Details({required this.product});

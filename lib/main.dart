@@ -6,6 +6,7 @@ import 'pages/Home.dart';
 import 'pages/Logo.dart';
 import 'provider/cart.dart';
 import 'provider/closet.dart';
+import 'provider/userpro.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => ImageModel()),
         ChangeNotifierProvider(create: (context) => Cart()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

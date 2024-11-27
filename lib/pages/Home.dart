@@ -2,7 +2,9 @@ import 'package:fashion/pages/Logo.dart';
 import 'package:fashion/pages/closet_selection.dart';
 import 'package:fashion/pages/edit_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../provider/userpro.dart';
 import '../shared/appbar.dart';
 import '../shared/colors.dart';
 import 'DisplayD.dart';
@@ -12,6 +14,8 @@ import 'search.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final userInfo = userProvider.userInfo;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -35,23 +39,36 @@ class HomePage extends StatelessWidget {
           children: [
             Column(
               children: [
-                const UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/img/2.jpg"),
-                        fit: BoxFit.cover),
-                  ),
+                UserAccountsDrawerHeader(
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(colors: [
+                    Color.fromARGB(124, 218, 197, 175),
+                    Color.fromARGB(92, 236, 171, 93),
+                    Color.fromARGB(103, 220, 144, 63),
+                  ])
+                      // image: DecorationImage(
+                      //     image: AssetImage("assets/img/2.jpg"),
+                      //     fit: BoxFit.cover),
+                      ),
                   currentAccountPicture: CircleAvatar(
-                      radius: 55,
-                      backgroundImage: AssetImage("assets/img/1.jpg")),
+                    radius: 55,
+                    backgroundImage: userInfo.image != null
+                        ? FileImage(userInfo.image!)
+                        : const AssetImage("assets/img/1.jpg") as ImageProvider,
+                  ),
                   accountEmail: Text(
-                    "maria@61.com",
-                    style: TextStyle(
+                    userInfo.email.isNotEmpty
+                        ? userInfo.email
+                        : "No email provided",
+                    style: const TextStyle(
                       color: Color.fromARGB(255, 9, 5, 5),
                     ),
                   ),
-                  accountName: Text("Maria Zaid",
-                      style: TextStyle(
+                  accountName: Text(
+                      userInfo.username.isNotEmpty
+                          ? userInfo.username
+                          : "No username provided",
+                      style: const TextStyle(
                         color: Color.fromARGB(255, 9, 5, 5),
                       )),
                 ),
@@ -152,7 +169,8 @@ class HomePage extends StatelessWidget {
                               Shadow(
                                 offset: Offset(2,
                                     2), // Slight shadow for better readability
-                                color: Color.fromARGB(255, 61, 60, 60).withOpacity(0.7),
+                                color: Color.fromARGB(255, 61, 60, 60)
+                                    .withOpacity(0.7),
                                 blurRadius: 3,
                               ),
                             ],
