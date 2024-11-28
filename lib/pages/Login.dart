@@ -146,7 +146,7 @@ class _LoginState extends State<Login> {
                                 ),
                                 TextFormField(
                                   controller: passwordController,
-                                  obscureText: true,
+                                  obscureText: !IsVisible,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return "Please enter your password";
@@ -232,10 +232,10 @@ class _LoginState extends State<Login> {
                       child: const Padding(
                           padding: EdgeInsets.only(top: 60.0, left: 22),
                           child: Text(
-                            "Hello\n Sing in!",
+                            "Hello\n Sign up!",
                             style: TextStyle(
                                 fontSize: 30,
-                                color: Colors.white,
+                                color: Color.fromARGB(255, 147, 83, 0),
                                 fontWeight: FontWeight.bold),
                           ))),
                   Padding(
@@ -301,7 +301,7 @@ class _LoginState extends State<Login> {
                                 ),
                                 TextFormField(
                                   controller: signupPasswordController,
-                                  obscureText: true,
+                                  obscureText:  !IsVisible,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return "Please enter your password";

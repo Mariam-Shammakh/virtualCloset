@@ -63,8 +63,9 @@ class ClosetSelectionPage extends StatelessWidget {
                   },
                   child: const Text(
                     'Cancel',
-                    style:
-                        TextStyle(color: BTNpink,),
+                    style: TextStyle(
+                      color: BTNpink,
+                    ),
                   ),
                 ),
                 TextButton(
@@ -109,17 +110,19 @@ class ClosetSelectionPage extends StatelessWidget {
               children: [
                 TextField(
                   controller: nameController,
-                  decoration: const InputDecoration(labelText: 'Item Name',
-                            labelStyle: TextStyle(
-                              color: Color.fromARGB(255, 147, 83, 0),
-                            )),
+                  decoration: const InputDecoration(
+                      labelText: 'Item Name',
+                      labelStyle: TextStyle(
+                        color: Color.fromARGB(255, 147, 83, 0),
+                      )),
                 ),
                 TextField(
                   controller: categoryController,
-                  decoration: const InputDecoration(labelText: 'Category',
-                            labelStyle: TextStyle(
-                              color: Color.fromARGB(255, 147, 83, 0),
-                            )),
+                  decoration: const InputDecoration(
+                      labelText: 'Category',
+                      labelStyle: TextStyle(
+                        color: Color.fromARGB(255, 147, 83, 0),
+                      )),
                 ),
               ],
             ),
@@ -128,8 +131,7 @@ class ClosetSelectionPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child:
-                    const Text('Cancel', style: TextStyle(color: BTNpink)),
+                child: const Text('Cancel', style: TextStyle(color: BTNpink)),
               ),
               TextButton(
                 onPressed: () {
@@ -144,8 +146,10 @@ class ClosetSelectionPage extends StatelessWidget {
                   }
                   Navigator.of(context).pop();
                 },
-                child:
-                    const Text('Save', style: TextStyle(color: Color.fromARGB(255, 147, 83, 0),fontWeight: FontWeight.bold,
+                child: const Text('Save',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 147, 83, 0),
+                        fontWeight: FontWeight.bold,
                         fontSize: 20)),
               ),
             ],

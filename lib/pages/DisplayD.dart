@@ -25,7 +25,6 @@ class DisplayD extends StatelessWidget {
         .toList();
     final userProvider = Provider.of<UserProvider>(context);
     final userInfo = userProvider.userInfo;
-    
 
     return Scaffold(
       appBar: AppBar(
@@ -160,24 +159,27 @@ class DisplayD extends StatelessWidget {
                         );
                       },
                       child: GridTile(
-          footer: GridTileBar(
-            trailing: IconButton(
-              icon: Consumer<Cart>(
-                builder: (context, cart, _) {
-                  return Icon(
-                    cart.isFavorite(item)
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    color: cart.isFavorite(item) ? Colors.red : Colors.grey,
-                  );
-                },
-              ),
-              onPressed: () {
-                Provider.of<Cart>(context, listen: false).toggleFavorite(item);
-              },
-            ),
-            title: Text(item.name, textAlign: TextAlign.center),
-          ),
+                        footer: GridTileBar(
+                          trailing: IconButton(
+                            icon: Consumer<Cart>(
+                              builder: (context, cart, _) {
+                                return Icon(
+                                  cart.isFavorite(item)
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: cart.isFavorite(item)
+                                      ? Colors.red
+                                      : Colors.grey,
+                                );
+                              },
+                            ),
+                            onPressed: () {
+                              Provider.of<Cart>(context, listen: false)
+                                  .toggleFavorite(item);
+                            },
+                          ),
+                          title: Text(item.name, textAlign: TextAlign.center),
+                        ),
                         child: Stack(children: [
                           Positioned(
                             top: -3,
