@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 
+import '../model/user_info.dart';
+import '../provider/userpro.dart';
 import '../shared/appbar.dart';
 import '../shared/colors.dart';
 
@@ -19,25 +22,41 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   File? _profileImage;
   var IsVisible = false;
-  @override
-  void initState() {
-    super.initState();
-    // Initialize the form fields with default values
-    _userName = "";
-    _email = "";
-    _Password = "";
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // Initialize the form fields with default values
+  //   _userName = "";
+  //   _email = "";
+  //   _Password = "";
+  // }
+
+  bool _isPickingImage = false;
 
   Future<void> _pickProfileImage() async {
-    final pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
+    if (_isPickingImage) return; // Prevent re-invoking the picker
+    setState(() {
+      _isPickingImage = true;
+    });
+
+    try {
+      final pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (pickedImage != null) {
+        setState(() {
+          _profileImage = File(pickedImage.path);
+        });
+      }
+    } catch (e) {
+      // Handle any errors during image picking
+      print("Error picking image: $e");
+    } finally {
       setState(() {
-        _profileImage = File(pickedImage.path);
+        _isPickingImage = false; // Reset the flag
       });
     }
   }
-
   void _saveProfile() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -45,6 +64,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
       print("userName: $_userName");
       print("Email: $_email");
       print("Password: $_Password");
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+      // Update the provider with form data
+      userProvider.setUserInfo(UserInfo(
+        email: _email,
+        password: _Password,
+        username: _userName,
+        image: _profileImage,
+      ));
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Profile updated successfully!')),
+      );
+
+       Navigator.pushNamed(context, 'HomePage');
     }
   }
 
@@ -82,6 +116,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
                 SizedBox(height: 16.0),
                 TextFormField(
+                  
                   decoration: const InputDecoration(
                       label: Text(
                     "userName",

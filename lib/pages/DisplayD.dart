@@ -15,6 +15,7 @@ import 'details_screen.dart';
 
 class DisplayD extends StatelessWidget {
   final String category;
+
   DisplayD({required this.category});
 
   @override
@@ -24,6 +25,8 @@ class DisplayD extends StatelessWidget {
         .toList();
     final userProvider = Provider.of<UserProvider>(context);
     final userInfo = userProvider.userInfo;
+    
+
     return Scaffold(
       appBar: AppBar(
         actions: [ProductsAndPrice()],
@@ -42,11 +45,7 @@ class DisplayD extends StatelessWidget {
                     Color.fromARGB(124, 218, 197, 175),
                     Color.fromARGB(92, 236, 171, 93),
                     Color.fromARGB(103, 220, 144, 63),
-                  ])
-                      // image: DecorationImage(
-                      //     image: AssetImage("assets/img/2.jpg"),
-                      //     fit: BoxFit.cover),
-                      ),
+                  ])),
                   currentAccountPicture: CircleAvatar(
                     radius: 55,
                     backgroundImage: userInfo.image != null
@@ -103,7 +102,7 @@ class DisplayD extends StatelessWidget {
                       );
                     }),
                 ListTile(
-                  title: const Text("Change Accont"),
+                  title: const Text("Change Account"),
                   leading: const Icon(Icons.change_circle_outlined),
                   onTap: () {
                     Navigator.push(
@@ -161,22 +160,24 @@ class DisplayD extends StatelessWidget {
                         );
                       },
                       child: GridTile(
-                        footer: SizedBox(
-                          height: 2,
-                          child: GridTileBar(
-                            trailing: IconButton(
-                                color: Color.fromARGB(255, 138, 134, 134),
-                                onPressed: () {
-                                  final carttt =
-                                      Provider.of<Cart>(context, listen: false);
-                                  carttt.add(item);
-                                },
-                                icon: const Icon(Icons.favorite_border_sharp)),
-                            title: const Text(
-                              "",
-                            ),
-                          ),
-                        ),
+          footer: GridTileBar(
+            trailing: IconButton(
+              icon: Consumer<Cart>(
+                builder: (context, cart, _) {
+                  return Icon(
+                    cart.isFavorite(item)
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    color: cart.isFavorite(item) ? Colors.red : Colors.grey,
+                  );
+                },
+              ),
+              onPressed: () {
+                Provider.of<Cart>(context, listen: false).toggleFavorite(item);
+              },
+            ),
+            title: Text(item.name, textAlign: TextAlign.center),
+          ),
                         child: Stack(children: [
                           Positioned(
                             top: -3,

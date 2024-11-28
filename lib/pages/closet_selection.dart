@@ -64,7 +64,7 @@ class ClosetSelectionPage extends StatelessWidget {
                   child: const Text(
                     'Cancel',
                     style:
-                        TextStyle(color: BTNpink, fontWeight: FontWeight.w100),
+                        TextStyle(color: BTNpink,),
                   ),
                 ),
                 TextButton(
@@ -84,7 +84,7 @@ class ClosetSelectionPage extends StatelessWidget {
                     style: TextStyle(
                         color: Color.fromARGB(255, 147, 83, 0),
                         fontWeight: FontWeight.bold,
-                        fontSize: 30),
+                        fontSize: 20),
                   ),
                 ),
               ],
@@ -92,6 +92,66 @@ class ClosetSelectionPage extends StatelessWidget {
           },
         );
       }
+    }
+
+    Future<void> _editItem(
+        BuildContext context, int index, ImageItem item) async {
+      final nameController = TextEditingController(text: item.name);
+      final categoryController = TextEditingController(text: item.category);
+
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Edit Item Details'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(labelText: 'Item Name',
+                            labelStyle: TextStyle(
+                              color: Color.fromARGB(255, 147, 83, 0),
+                            )),
+                ),
+                TextField(
+                  controller: categoryController,
+                  decoration: const InputDecoration(labelText: 'Category',
+                            labelStyle: TextStyle(
+                              color: Color.fromARGB(255, 147, 83, 0),
+                            )),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child:
+                    const Text('Cancel', style: TextStyle(color: BTNpink)),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (nameController.text.isNotEmpty &&
+                      categoryController.text.isNotEmpty) {
+                    Provider.of<ImageModel>(context, listen: false)
+                        .editImageItem(
+                      index,
+                      nameController.text,
+                      categoryController.text,
+                    );
+                  }
+                  Navigator.of(context).pop();
+                },
+                child:
+                    const Text('Save', style: TextStyle(color: Color.fromARGB(255, 147, 83, 0),fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+              ),
+            ],
+          );
+        },
+      );
     }
 
     return Scaffold(
@@ -139,9 +199,8 @@ class ClosetSelectionPage extends StatelessWidget {
                   elevation: 6,
                   shadowColor: appbarGreen,
                   color: Colors.white,
-                  shape:const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)
-                         ),
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
                       side: BorderSide(width: 0.6, color: fontcolor)),
                   child: ListTile(
                     leading: ClipRRect(
@@ -155,6 +214,25 @@ class ClosetSelectionPage extends StatelessWidget {
                     ),
                     title: Text(item.name),
                     subtitle: Text(item.category),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit, color: Colors.orangeAccent),
+                          onPressed: () {
+                            _editItem(
+                                context, index, item); // Function to edit item
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete, color: fontcolor),
+                          onPressed: () {
+                            Provider.of<ImageModel>(context, listen: false)
+                                .deleteImageItem(index);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
